@@ -38,7 +38,7 @@ The aim of this study is a brief explanation and representation of the `CLOTHING
 <li class="fragment highlight-current-red" data-fragment-index="5"> **Dollar12**:	Dollar amount of purchases in the last 12 months</li>
 <li class="fragment highlight-current-green" data-fragment-index="6"> **Freq24**:	Number of purchases in the last 24 month</li>
 <li class="fragment highlight-current-blue" data-fragment-index="7"> **Dollar24**:	Dollar amount of purchases in the last 24 months</li>
-<li class="fragment highlight-current-red" data-fragment-index="8">  **Card**:	1 for customers who have a private-label credit card with the retailer, 0 if not
+<li class="fragment highlight-current-red" data-fragment-index="8">  **Card**:1 for customers who have a private-label credit card with the retailer, 0 if not
 </li>
 </ul>
 

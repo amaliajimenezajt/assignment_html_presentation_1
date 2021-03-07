@@ -1,6 +1,6 @@
 ---
 title: "**DATA TIDYING PRESENTATION**"
-author: "*Amalia Jiménez Toledano*"
+author: "Amalia Jiménez Toledano"
 output: 
   revealjs::revealjs_presentation:
     theme: sky
@@ -9,8 +9,6 @@ output:
     highlight: kate
     transition: concave
     css: custom.css
-    reveal_options:
-      slideNumber: true
 ---
 
 
@@ -47,6 +45,26 @@ The aim of this study is a brief explanation and representation of the `CLOTHING
 
 ## DATABASE CONSIDERATIONS
 
+
+```{r include=FALSE}
+Clothing <- Clothing[-60,-1] # Missing Value
+Clothing$Card <- as.factor(Clothing$Card) # Categorical variable
+
+
+card=matrix(0,nrow=nrow(Clothing),ncol=1)
+for (i in 1:nrow(card)){
+  if(Clothing[i,7]==1){
+    card[i]="Private label"
+  }
+  if(Clothing[i,7]==0){
+    card[i]="Public label"
+  }
+}
+
+Clothing$Card <- as.factor(card)
+```
+
+
 ```{r}
 summary(Clothing)
 ```
@@ -57,8 +75,38 @@ Since the variable "Card" is categorical, the transformation is performed:
 Clothing$Card <- as.factor(Clothing$Card)
 ```
 
+# CARD VARIABLE
 
-# BOXPLOT NUMERIC VARIABLES
+The variable `Card` takes the following values:
+
+<li> 1: customers who have a private-label credit card </li>
+<li> 0: customers who have a public-label credit card </li>
+
+
+
+```{r echo=FALSE}
+
+colors <- c('rgb(211,94,96)', 'rgb(128,133,133)')
+
+plot1 <- plot_ly(Clothing, labels = ~Card,  type = 'pie',
+                 marker = list(colors = colors,
+                      line = list(color = '#FFFFFF', width = 1)))
+plot1 <- plot1 %>% layout(title = 'PIE  PLOT CARD VARIABLE',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+htmlwidgets::saveWidget(plot1,'plotly1.html')
+knitr::include_url('plotly1.html', height = "400px")
+```
+
+
+
+
+<div2> It is found that 66.66$\%$ of consumers have a private-label credit card and 33.33$\%$ not.</div2>
+
+
+
+# BOXPLOT RECENCY AND AMOUNT
 
 <p class="fragment grow" data-fragment-index="1">Below are the `box-plots` of the *Recency* and *Amount* variables.</p>
 
@@ -90,48 +138,17 @@ ggplot(Clothing, aes(x=0,y=Amount))+
 ```
 
 
-# PLOT CATEGORICAL VARIABLE
-
-The variable `Card` takes the following values:
-
-<li> 1: customers who have a private-label credit card </li>
-<li> 0: customers who have a public-label credit card </li>
-
-```{r echo=FALSE,out.width='500cm',fig.align='center',fig.pos="H"}
-library(tidyverse)
-library(ggplot2)
-count.g02=data.frame(
-  g02=c("Public-label","Private-label"),
-  n=c(40,20),
-  prop=c(66.66,33.33)
-)
-count.g02<- count.g02 %>%
-  arrange(desc(g02)) %>%
-  mutate(lab.ypos = cumsum(prop) - 0.5*prop)
-
-ggplot(count.g02, aes(x = "", y = prop, fill = g02)) +
-  geom_bar(width = 1, stat = "identity", color = "white") +
-  coord_polar("y", start = 0)+
-  guides(fill=guide_legend(title="Card"))+
-  labs(title="Pie Plot Variable Card")+
-  geom_text(aes(y = lab.ypos, label = prop), color = "white")+
-  scale_fill_manual(values=c("#0073C2FF","#EFC000FF")) +
-  theme_void()
-```
-
-<div2> It is found that 66.66$\%$ of consumers have a private-label credit card and 33.33$\%$ not.</div2>
 
 # REGRESSION MODEL
 
-<div22>We are interested in knowing the relationship of the variable `Amount` with respect to the variable `Dollar24`:</div22>
+<div22>We are interested in knowing the relationship of the variable `Amount` with respect to the variables `Freq24` and  `Dollar24`:</div22>
 
 
 ## SUMMARY OF THE MODEL
 
 
 ```{r include=FALSE}
-Clothing=Clothing[-60,]
-out <- lm(Amount ~ Dollar24,data=Clothing)
+out <- lm(Amount ~ Freq24+Dollar24,data=Clothing)
 summary(out)
 library(knitr)
 ```
@@ -142,24 +159,9 @@ kable(summary(out)$coef, digits=3)
 
 
 
-<div3>**Results:**</div3> $y_i=\beta_0+\beta_1x_1=-6.2154+ 0.203x_1$
+<div3>**Results:**</div3> $y_i=\beta_0+\beta_1x_1+\beta_2x_2=-22549.66+-14210.5x_1+193.044x_2$
 
---> The variable `Dollar24` is found to be significant for the model.
-
-
-## PLOTLY THE MODEL
+--> The variable `Dollar24`and `Freq24` are found to be significant for the model.
 
 
-```{r, echo=F,warning=FALSE}
-Clothing=Clothing[-60,]
-Clothing$Card <- as.factor(Clothing$Card)
-regmodel <- lm(Amount ~ Dollar24, data = Clothing)
-plot <- Clothing %>%
-  plot_ly(x = ~Dollar24, color = ~Card) %>%
-  add_markers(y = ~Amount) %>%
-  add_lines(x = ~Dollar24, y = fitted(regmodel))
-htmlwidgets::saveWidget(plot,'plotly.html')
-knitr::include_url('plotly.html', height = "576px")
-```
-
-# END OF THE PRESENTATION
+# THANKS

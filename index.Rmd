@@ -159,9 +159,25 @@ kable(summary(out)$coef, digits=3)
 
 
 
-<div3>**Results:**</div3> $y_i=\beta_0+\beta_1x_1+\beta_2x_2=-22549.66+-14210.5x_1+193.044x_2$
+<div3>**Results:**</div3> $y_i=\beta_0+\beta_1x_1+\beta_2x_2=-22549.66-14210.5x_1+193.044x_2$
 
 --> The variable `Dollar24`and `Freq24` are found to be significant for the model.
+
+
+# DYNAMIC PLOT
+
+Click on the dots to see the type of credit card:
+
+
+```{r echo=FALSE}
+plotly=plot_ly(Clothing, x = ~Freq12, y = ~Freq24, type = "scatter", mode = "markers",
+        symbol = ~Card) %>% 
+        layout(title = "Freq12 vs Freq 24",
+               xaxis = list(title = "Freq12"), 
+               yaxis = list(title = "Freq24"))
+htmlwidgets::saveWidget(plotly,'plotly.html')
+knitr::include_url('plotly.html', height = "400px")
+```
 
 
 # THANKS

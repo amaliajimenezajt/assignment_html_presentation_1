@@ -28,7 +28,7 @@ library(prettyunits)
 
 The aim of this study is a brief explanation and representation of the `CLOTHING` database taken from the `Stat2Data` package:
 
-<div3>**The variables of the data are the following:**</div3>
+<div2>**The variables of the data are the following:**</div2>
 
 <ul>
 <li class="fragment highlight-current-blue" data-fragment-index="1">**ID**: 	Case ID</li>

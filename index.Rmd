@@ -166,7 +166,7 @@ kable(summary(out)$coef, digits=3)
 
 # DYNAMIC PLOT
 
-Click on the dots to see the type of credit card:
+<div2>Click on the dots to see the type of credit card:</div2>
 
 
 ```{r echo=FALSE}
